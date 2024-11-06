@@ -5,9 +5,9 @@ escola,com.sistema.escola.dto.curso,CursoSemMatriculasDTO,0,23,0,0,0,2,0,2,0,2
 escola,com.sistema.escola.dto.aluno,AlunoSemMatriculasDTO,0,28,0,0,0,2,0,2,0,2
 escola,com.sistema.escola.dto.aluno,AlunoComMatriculasDTO,0,39,0,0,0,2,0,2,0,2
 escola,com.sistema.escola.dto.aluno,CreateAlunoDTO,0,9,0,0,0,1,0,1,0,1
-escola,com.sistema.escola.controller,CursoController,23,3,0,0,3,1,3,1,3,1
+escola,com.sistema.escola.controller,CursoController,0,26,0,0,0,4,0,4,0,4
 escola,com.sistema.escola.controller,MatriculaController,48,3,0,0,6,1,6,1,6,1
-escola,com.sistema.escola.controller,AlunoController,23,3,0,0,3,1,3,1,3,1
+escola,com.sistema.escola.controller,AlunoController,0,26,0,0,0,4,0,4,0,4
 escola,com.sistema.escola.exceptions.handler,CustomizedResponseEntityExceptionHandler,72,3,0,0,8,1,4,1,4,1
 escola,com.sistema.escola.entity.aluno,Email,0,20,1,3,0,6,1,3,0,2
 escola,com.sistema.escola.entity.curso,CodigoCurso,0,20,1,3,0,6,1,3,0,2

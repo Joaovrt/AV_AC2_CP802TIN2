@@ -1,4 +1,7 @@
 /home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/EscolaApplicationTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/controller/AlunoControllerTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/controller/CursoControllerTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/controller/MatriculaControllerTests.java
 /home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/entity/AlunoEntityTests.java
 /home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/entity/CursoEntityTests.java
 /home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/entity/MatriculaEntityTests.java

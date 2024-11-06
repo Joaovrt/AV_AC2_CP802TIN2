@@ -2,6 +2,7 @@ com/sistema/escola/repository/MatriculaRepositoryIntegrationTests.class
 com/sistema/escola/service/MatriculaServiceTests.class
 com/sistema/escola/service/CursoServiceTests.class
 com/sistema/escola/repository/CursoRepositoryIntegrationTests.class
+com/sistema/escola/controller/CursoControllerTests.class
 com/sistema/escola/repository/AlunoRepositoryTests.class
 com/sistema/escola/repository/AlunoRepositoryIntegrationTests.class
 com/sistema/escola/repository/MatriculaRepositoryTests.class
@@ -11,3 +12,4 @@ com/sistema/escola/EscolaApplicationTests.class
 com/sistema/escola/repository/CursoRepositoryTests.class
 com/sistema/escola/service/AlunoServiceTests.class
 com/sistema/escola/entity/CursoEntityTests.class
+com/sistema/escola/controller/AlunoControllerTests.class
