@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MatriculaService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">escola</a> &gt; <a href="index.source.html" class="el_package">com.sistema.escola.service</a> &gt; <span class="el_source">MatriculaService.java</span></div><h1>MatriculaService.java</h1><pre class="source lang-java linenums">package com.sistema.escola.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import com.sistema.escola.dto.matricula.CreateMatriculaDTO;
+import com.sistema.escola.dto.matricula.FinalizarMatriculaDTO;
+import com.sistema.escola.dto.matricula.FinalizarMatriculaResponseDTO;
+import com.sistema.escola.dto.matricula.MatriculaResponseDTO;
+import com.sistema.escola.entity.matricula.Matricula;
+import com.sistema.escola.entity.matricula.StatusMatricula;
+import com.sistema.escola.exceptions.ResourceConflictException;
+import com.sistema.escola.exceptions.ResourceNotFoundException;
+import com.sistema.escola.repository.AlunoRepository;
+import com.sistema.escola.repository.CursoRepository;
+import com.sistema.escola.repository.MatriculaRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L23">public class MatriculaService {</span>
+  @Autowired
+  private MatriculaRepository matriculaRepository;
+
+  @Autowired
+  private AlunoRepository alunoRepository;
+
+  @Autowired
+  private CursoRepository cursoRepository;
+
+  public MatriculaResponseDTO createMatricula(CreateMatriculaDTO createMatriculaDTO){
+    try{
+
+<span class="fc" id="L36">      var aluno = alunoRepository.findById(createMatriculaDTO.aluno_id());</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">      if(aluno.isEmpty())</span>
+<span class="fc" id="L38">        throw new ResourceNotFoundException(&quot;Nenhum aluno encontrado com o id: &quot; + createMatriculaDTO.aluno_id());</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">      if(aluno.get().getQtdCursosDisponiveis()&lt;=0)</span>
+<span class="fc" id="L40">        throw new ResourceConflictException(&quot;Aluno não tem quantidade de cursos disponíveis.&quot;);</span>
+<span class="fc" id="L41">      aluno.get().setQtdCursosDisponiveis(aluno.get().getQtdCursosDisponiveis()-1);</span>
+<span class="fc" id="L42">      var newAluno = alunoRepository.save(aluno.get()); </span>
+
+<span class="fc" id="L44">      var curso = cursoRepository.findById(createMatriculaDTO.curso_id());</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">      if(curso.isEmpty())</span>
+<span class="fc" id="L46">        throw new ResourceNotFoundException(&quot;Nenhum curso encontrado com o id: &quot; + createMatriculaDTO.curso_id());</span>
+
+<span class="fc" id="L48">      Matricula matricula = Matricula.builder()</span>
+<span class="fc" id="L49">        .codigo(createMatriculaDTO.codigo())</span>
+<span class="fc" id="L50">        .media(0)</span>
+<span class="fc" id="L51">        .status(StatusMatricula.NAO_INICIADO)</span>
+<span class="fc" id="L52">        .aluno(newAluno)</span>
+<span class="fc" id="L53">        .curso(curso.get())</span>
+<span class="fc" id="L54">        .build();</span>
+  
+<span class="fc" id="L56">      var newMatricula= matriculaRepository.save(matricula);</span>
+<span class="fc" id="L57">      return MatriculaResponseDTO.from(newMatricula);</span>
+    }
+<span class="fc" id="L59">    catch (DataIntegrityViolationException e) {</span>
+<span class="fc" id="L60">        throw new ResourceConflictException(&quot;O aluno já está matriculado nesse curso.&quot;);</span>
+    }
+<span class="fc" id="L62">    catch (Exception e) {</span>
+<span class="fc bfc" id="L63" title="All 4 branches covered.">      if (e instanceof ResourceNotFoundException || e instanceof ResourceConflictException) {</span>
+<span class="fc" id="L64">        throw e;</span>
+      }
+<span class="fc" id="L66">      throw new RuntimeException(&quot;Erro inesperado ao criar matricula.&quot;);</span>
+    }
+  }
+
+  public List&lt;MatriculaResponseDTO&gt; listAllMatriculas(){
+
+<span class="fc" id="L72">    var matriculas = matriculaRepository.findAll();</span>
+
+<span class="fc" id="L74">    return matriculas.stream()</span>
+<span class="fc" id="L75">      .map(MatriculaResponseDTO::from)</span>
+<span class="fc" id="L76">      .collect(Collectors.toList());</span>
+  }
+
+  public MatriculaResponseDTO getMatricula(String id){
+<span class="fc" id="L80">    var matricula = matriculaRepository.findById(id);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    if(matricula.isPresent())</span>
+<span class="fc" id="L82">      return MatriculaResponseDTO.from(matricula.get());</span>
+    else
+<span class="fc" id="L84">      throw new ResourceNotFoundException(&quot;Matricula não encontrada com o id: &quot; + id);</span>
+  }
+
+  public MatriculaResponseDTO iniciarMatricula(String id){
+<span class="fc" id="L88">    var matricula = matriculaRepository.findById(id);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">    if(matricula.isEmpty())</span>
+<span class="fc" id="L90">      throw new ResourceNotFoundException(&quot;Matricula não encontrada com o id: &quot; + id);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    if(matricula.get().getStatus()!= StatusMatricula.NAO_INICIADO)</span>
+<span class="fc" id="L92">      throw new ResourceConflictException(&quot;Matricula deve estar como 'Não iniciado' para começar.&quot;);</span>
+<span class="fc" id="L93">    matricula.get().setStatus(StatusMatricula.EM_ANDAMENTO);</span>
+<span class="fc" id="L94">    var newMatricula = matriculaRepository.save(matricula.get());</span>
+<span class="fc" id="L95">    return MatriculaResponseDTO.from(newMatricula);</span>
+  }
+
+  public MatriculaResponseDTO desistirMatricula(String id){
+<span class="fc" id="L99">    var matricula = matriculaRepository.findById(id);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">    if(matricula.isEmpty())</span>
+<span class="fc" id="L101">      throw new ResourceNotFoundException(&quot;Matricula não encontrada com o id: &quot; + id);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">    if(matricula.get().getStatus()!= StatusMatricula.EM_ANDAMENTO)</span>
+<span class="fc" id="L103">      throw new ResourceConflictException(&quot;Matricula deve estar como 'Em andamento' para desistir.&quot;);</span>
+<span class="fc" id="L104">    matricula.get().setStatus(StatusMatricula.NAO_INICIADO);</span>
+<span class="fc" id="L105">    var newMatricula = matriculaRepository.save(matricula.get());</span>
+<span class="fc" id="L106">    return MatriculaResponseDTO.from(newMatricula);</span>
+  }
+
+  public FinalizarMatriculaResponseDTO finalizarMatricula(String id, FinalizarMatriculaDTO finalizarMatriculaDTO){
+<span class="fc" id="L110">    var matricula = matriculaRepository.findById(id);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">    if(matricula.isEmpty())</span>
+<span class="fc" id="L112">      throw new ResourceNotFoundException(&quot;Matricula não encontrada com o id: &quot; + id);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">    if(matricula.get().getStatus()!= StatusMatricula.EM_ANDAMENTO)</span>
+<span class="fc" id="L114">      throw new ResourceConflictException(&quot;Matricula deve estar como 'Em andamento' para finalizar.&quot;);</span>
+<span class="fc" id="L115">    matricula.get().setStatus(StatusMatricula.FINALIZADO);</span>
+<span class="fc" id="L116">    matricula.get().setMedia(finalizarMatriculaDTO.media());</span>
+<span class="fc" id="L117">    var newMatricula = matriculaRepository.save(matricula.get());</span>
+<span class="fc" id="L118">    var mensagem = &quot;Nota mínima para o benefício não atingida. Assista ao vídeo listado na aba 'Revisão'.&quot;;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">    if(finalizarMatriculaDTO.media()&gt;7.0){</span>
+<span class="fc" id="L120">      var aluno = alunoRepository.findById(matricula.get().getAluno().getId());</span>
+<span class="fc" id="L121">      aluno.get().setQtdCursosDisponiveis(aluno.get().getQtdCursosDisponiveis()+3);</span>
+<span class="fc" id="L122">      alunoRepository.save(aluno.get()); </span>
+<span class="fc" id="L123">      mensagem = &quot;Benefício de mais 3 cursos adquirido!&quot;;</span>
+    }
+<span class="fc" id="L125">    return FinalizarMatriculaResponseDTO.from(newMatricula,mensagem);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

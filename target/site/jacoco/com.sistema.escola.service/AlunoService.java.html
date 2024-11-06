@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AlunoService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">escola</a> &gt; <a href="index.source.html" class="el_package">com.sistema.escola.service</a> &gt; <span class="el_source">AlunoService.java</span></div><h1>AlunoService.java</h1><pre class="source lang-java linenums">package com.sistema.escola.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import com.sistema.escola.dto.aluno.AlunoComMatriculasDTO;
+import com.sistema.escola.dto.aluno.AlunoSemMatriculasDTO;
+import com.sistema.escola.dto.aluno.CreateAlunoDTO;
+import com.sistema.escola.entity.aluno.Aluno;
+import com.sistema.escola.exceptions.ResourceConflictException;
+import com.sistema.escola.exceptions.ResourceNotFoundException;
+import com.sistema.escola.repository.AlunoRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L19">public class AlunoService {</span>
+
+  @Autowired
+  private AlunoRepository alunoRepository;
+
+  public AlunoSemMatriculasDTO createAluno(CreateAlunoDTO createAlunoDTO){
+    try{
+<span class="fc" id="L26">      Aluno aluno = Aluno.builder()</span>
+<span class="fc" id="L27">      .name(createAlunoDTO.name())</span>
+<span class="fc" id="L28">      .email(createAlunoDTO.email())</span>
+<span class="fc" id="L29">      .qtdCursosDisponiveis(1)</span>
+<span class="fc" id="L30">      .build();</span>
+  
+<span class="fc" id="L32">      var newAluno = alunoRepository.save(aluno);</span>
+<span class="fc" id="L33">      return AlunoSemMatriculasDTO.from(newAluno);</span>
+    }
+<span class="fc" id="L35">    catch (DataIntegrityViolationException e) {</span>
+<span class="fc" id="L36">        throw new ResourceConflictException(&quot;Outro aluno já está cadastrado com esse e-mail: &quot; + createAlunoDTO.email().getEmailAddress());</span>
+    } 
+<span class="fc" id="L38">    catch (Exception e) {</span>
+<span class="fc" id="L39">        throw new RuntimeException(&quot;Erro inesperado ao criar aluno.&quot;);</span>
+    }
+  }
+
+  public List&lt;AlunoSemMatriculasDTO&gt; listAllAlunos(){
+
+<span class="fc" id="L45">    var alunos = alunoRepository.findAll();</span>
+
+<span class="fc" id="L47">    return alunos.stream()</span>
+<span class="fc" id="L48">      .map(AlunoSemMatriculasDTO::from)</span>
+<span class="fc" id="L49">      .collect(Collectors.toList());</span>
+  }
+
+  public AlunoComMatriculasDTO getAluno(String id){
+<span class="fc" id="L53">    var aluno = alunoRepository.findById(id);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">    if(aluno.isPresent())</span>
+<span class="fc" id="L55">      return AlunoComMatriculasDTO.from(aluno.get());</span>
+    else
+<span class="fc" id="L57">      throw new ResourceNotFoundException(&quot;Aluno não encontrado com o id: &quot; + id);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CursoService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">escola</a> &gt; <a href="index.source.html" class="el_package">com.sistema.escola.service</a> &gt; <span class="el_source">CursoService.java</span></div><h1>CursoService.java</h1><pre class="source lang-java linenums">package com.sistema.escola.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import com.sistema.escola.dto.curso.CreateCursoDTO;
+import com.sistema.escola.dto.curso.CursoComMatriculasDTO;
+import com.sistema.escola.dto.curso.CursoSemMatriculasDTO;
+import com.sistema.escola.entity.curso.Curso;
+import com.sistema.escola.exceptions.ResourceConflictException;
+import com.sistema.escola.exceptions.ResourceNotFoundException;
+import com.sistema.escola.repository.CursoRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L19">public class CursoService {</span>
+  @Autowired
+  private CursoRepository cursoRepository;
+
+  public CursoSemMatriculasDTO createCurso(CreateCursoDTO createCursoDTO){
+    try{
+<span class="fc" id="L25">      Curso curso = Curso.builder()</span>
+<span class="fc" id="L26">      .name(createCursoDTO.name())</span>
+<span class="fc" id="L27">      .codigo(createCursoDTO.codigo())</span>
+<span class="fc" id="L28">      .build();</span>
+  
+<span class="fc" id="L30">      var newCurso = cursoRepository.save(curso);</span>
+<span class="fc" id="L31">      return CursoSemMatriculasDTO.from(newCurso);</span>
+    }
+<span class="fc" id="L33">    catch (DataIntegrityViolationException e) {</span>
+<span class="fc" id="L34">        throw new ResourceConflictException(&quot;Outro curso já está cadastrado com esse código: &quot; + createCursoDTO.codigo().getCodigo());</span>
+    } 
+<span class="fc" id="L36">    catch (Exception e) {</span>
+<span class="fc" id="L37">        throw new RuntimeException(&quot;Erro inesperado ao criar curso.&quot;);</span>
+    }
+  }
+
+  public List&lt;CursoSemMatriculasDTO&gt; listAllCursos(){
+
+<span class="fc" id="L43">    var cursos = cursoRepository.findAll();</span>
+
+<span class="fc" id="L45">    return cursos.stream()</span>
+<span class="fc" id="L46">      .map(CursoSemMatriculasDTO::from)</span>
+<span class="fc" id="L47">      .collect(Collectors.toList());</span>
+  }
+
+  public CursoComMatriculasDTO getCurso(String id){
+<span class="fc" id="L51">    var curso = cursoRepository.findById(id);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    if(curso.isPresent())</span>
+<span class="fc" id="L53">      return CursoComMatriculasDTO.from(curso.get());</span>
+    else
+<span class="fc" id="L55">      throw new ResourceNotFoundException(&quot;Curso não encontrado com o id: &quot; + id);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

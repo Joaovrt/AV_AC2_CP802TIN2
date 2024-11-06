@@ -1,0 +1,13 @@
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/EscolaApplicationTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/entity/AlunoEntityTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/entity/CursoEntityTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/entity/MatriculaEntityTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/repository/AlunoRepositoryIntegrationTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/repository/AlunoRepositoryTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/repository/CursoRepositoryIntegrationTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/repository/CursoRepositoryTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/repository/MatriculaRepositoryIntegrationTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/repository/MatriculaRepositoryTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/service/AlunoServiceTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/service/CursoServiceTests.java
+/home/jo-o-tagliarini/eclipse-workspace/escola/src/test/java/com/sistema/escola/service/MatriculaServiceTests.java
