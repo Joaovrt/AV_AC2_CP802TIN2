@@ -1,4 +1,33 @@
 -------------------------------------------------------------------------------
 Test set: com.sistema.escola.entity.CursoEntityTests
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.sistema.escola.entity.CursoEntityTests
+Tests run: 2, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.126 s <<< FAILURE! -- in com.sistema.escola.entity.CursoEntityTests
+com.sistema.escola.entity.CursoEntityTests.deveLancarExcecaoParaCodigoInvalido -- Time elapsed: 0.108 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown, expected: <java.lang.IllegalArgumentException> but was: <java.lang.NoClassDefFoundError>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:67)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+	at com.sistema.escola.entity.CursoEntityTests.deveLancarExcecaoParaCodigoInvalido(CursoEntityTests.java:33)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.lang.NoClassDefFoundError: com/sistema/escola/entity/curso/CodigoCurso
+	at com.sistema.escola.entity.CursoEntityTests.lambda$deveLancarExcecaoParaCodigoInvalido$0(CursoEntityTests.java:34)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:53)
+	... 6 more
+Caused by: java.lang.ClassNotFoundException: com.sistema.escola.entity.curso.CodigoCurso
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	... 8 more
+
+com.sistema.escola.entity.CursoEntityTests.deveCriarCursoComCodigoValido -- Time elapsed: 0.016 s <<< ERROR!
+java.lang.NoClassDefFoundError: com/sistema/escola/entity/curso/CodigoCurso
+	at com.sistema.escola.entity.CursoEntityTests.deveCriarCursoComCodigoValido(CursoEntityTests.java:16)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+Caused by: java.lang.ClassNotFoundException: com.sistema.escola.entity.curso.CodigoCurso
+	... 4 more
+
