@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: escola-staging
     volumes:
-      - db-prod-volume:/var/lib/postgresql/data
+      - db-staging-volume:/var/lib/postgresql/data
 
   api:
     image: joaovrt/testedocker:latest
