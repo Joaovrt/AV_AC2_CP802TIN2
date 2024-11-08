@@ -12,10 +12,10 @@ services:
   api:
     image: joaovrt/testedocker:latest
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: staging
       DB_HOST: database
       DB_PORT: 5432
-      DB_NAME: escola-prod
+      DB_NAME: escola-staging
       DB_USER: postgres
       DB_PASSWORD: postgres
     ports:
