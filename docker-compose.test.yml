@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  api:
+    image: joaovrt/testedocker:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: test
+    ports:
+      - "8079:8081"
+
+volumes:
+  db-test-volume:
