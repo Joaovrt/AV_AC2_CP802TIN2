@@ -39,12 +39,11 @@ public class MatriculaService {
       if(aluno.get().getQtdCursosDisponiveis()<=0)
         throw new ResourceConflictException("Aluno não tem quantidade de cursos disponíveis.");
       aluno.get().setQtdCursosDisponiveis(aluno.get().getQtdCursosDisponiveis()-1);
-      var newAluno = alunoRepository.save(aluno.get()); 
 
       var curso = cursoRepository.findById(createMatriculaDTO.curso_id());
       if(curso.isEmpty())
         throw new ResourceNotFoundException("Nenhum curso encontrado com o id: " + createMatriculaDTO.curso_id());
-
+      var newAluno = alunoRepository.save(aluno.get()); 
       Matricula matricula = Matricula.builder()
         .codigo(createMatriculaDTO.codigo())
         .media(0)

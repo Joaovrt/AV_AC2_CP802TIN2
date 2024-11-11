@@ -113,7 +113,7 @@ public class MatriculaControllerTests {
 
         when(matriculaService.iniciarMatricula(matriculaId)).thenReturn(updatedMatriculaResponse);
 
-        mockMvc.perform(get("/matricula/iniciar/{id}", matriculaId)
+        mockMvc.perform(post("/matricula/iniciar/{id}", matriculaId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -134,7 +134,7 @@ public class MatriculaControllerTests {
 
         when(matriculaService.desistirMatricula(matriculaId)).thenReturn(updatedMatriculaResponse);
 
-        mockMvc.perform(get("/matricula/desistir/{id}", matriculaId)
+        mockMvc.perform(post("/matricula/desistir/{id}", matriculaId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -159,7 +159,7 @@ public class MatriculaControllerTests {
 
         when(matriculaService.finalizarMatricula(matriculaId, finalizarMatriculaDTO)).thenReturn(expectedResponse);
 
-        mockMvc.perform(get("/matricula/finalizar/{id}", matriculaId)
+        mockMvc.perform(post("/matricula/finalizar/{id}", matriculaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(finalizarMatriculaDTO)))
                 .andDo(print())
@@ -174,7 +174,7 @@ public class MatriculaControllerTests {
     public void finalizarMatricula_ReturnsExpectedMessage_WhenMediaIsAbove7() throws Exception {
         String matriculaId = "IDMATRICULA";
         FinalizarMatriculaDTO finalizarMatriculaDTO = new FinalizarMatriculaDTO(7.1);
-        AlunoSemMatriculasDTO aluno = new AlunoSemMatriculasDTO("IDALUNO", "NOME", "joao@email.com", 4); // 1 + 3
+        AlunoSemMatriculasDTO aluno = new AlunoSemMatriculasDTO("IDALUNO", "NOME", "joao@email.com", 4);
         CursoSemMatriculasDTO curso = new CursoSemMatriculasDTO("IDCURSO", "CURSO", "CP000AAA0");
 
         FinalizarMatriculaResponseDTO expectedResponse = new FinalizarMatriculaResponseDTO(
@@ -184,7 +184,7 @@ public class MatriculaControllerTests {
 
         when(matriculaService.finalizarMatricula(matriculaId, finalizarMatriculaDTO)).thenReturn(expectedResponse);
 
-        mockMvc.perform(get("/matricula/finalizar/{id}", matriculaId)
+        mockMvc.perform(post("/matricula/finalizar/{id}", matriculaId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(finalizarMatriculaDTO)))
                 .andDo(print())
@@ -192,6 +192,6 @@ public class MatriculaControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.media").value(7.1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("FINALIZADO"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.mensagem").value("Benefício de mais 3 cursos adquirido!"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.aluno.qtdCursosDisponiveis").value(4)); // Valida o incremento
+                .andExpect(MockMvcResultMatchers.jsonPath("$.aluno.qtdCursosDisponiveis").value(4));
     }
 }

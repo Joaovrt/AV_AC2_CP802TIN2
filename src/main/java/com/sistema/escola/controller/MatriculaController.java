@@ -40,17 +40,17 @@ public class MatriculaController {
       return ResponseEntity.status(HttpStatus.OK).body(matriculaService.getMatricula(id));
   }
 
-  @GetMapping(value="iniciar/{id}")
+  @PostMapping(value="iniciar/{id}")
   public ResponseEntity<MatriculaResponseDTO> iniciarMatricula(@PathVariable(value = "id") String id) {
       return ResponseEntity.status(HttpStatus.OK).body(matriculaService.iniciarMatricula(id));
   }
 
-  @GetMapping(value="desistir/{id}")
+  @PostMapping(value="desistir/{id}")
   public ResponseEntity<MatriculaResponseDTO> desistirMatricula(@PathVariable(value = "id") String id) {
       return ResponseEntity.status(HttpStatus.OK).body(matriculaService.desistirMatricula(id));
   }
   
-  @GetMapping(value="finalizar/{id}")
+  @PostMapping(value="finalizar/{id}")
   public ResponseEntity<FinalizarMatriculaResponseDTO> finalizarMatricula(@PathVariable(value = "id") String id, @RequestBody FinalizarMatriculaDTO finalizarMatriculaDTO) {
       return ResponseEntity.status(HttpStatus.OK).body(matriculaService.finalizarMatricula(id,finalizarMatriculaDTO));
   }
