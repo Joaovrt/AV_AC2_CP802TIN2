@@ -43,20 +43,20 @@ public class MatriculaService {
       var curso = cursoRepository.findById(createMatriculaDTO.curso_id());
       if(curso.isEmpty())
         throw new ResourceNotFoundException("Nenhum curso encontrado com o id: " + createMatriculaDTO.curso_id());
-      var newAluno = alunoRepository.save(aluno.get()); 
+
       Matricula matricula = Matricula.builder()
         .codigo(createMatriculaDTO.codigo())
         .media(0)
         .status(StatusMatricula.NAO_INICIADO)
-        .aluno(newAluno)
+        .aluno(aluno.get())
         .curso(curso.get())
         .build();
-  
       var newMatricula= matriculaRepository.save(matricula);
+      alunoRepository.save(aluno.get()); 
       return MatriculaResponseDTO.from(newMatricula);
     }
     catch (DataIntegrityViolationException e) {
-        throw new ResourceConflictException("O aluno já está matriculado nesse curso.");
+      throw new ResourceConflictException("O aluno já está matriculado nesse curso ou código é repetido.");
     }
     catch (Exception e) {
       if (e instanceof ResourceNotFoundException || e instanceof ResourceConflictException) {
